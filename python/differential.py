@@ -17,6 +17,8 @@ class Differential():
         '''Roll and pitch of MP Gear'''
         self.phi = 0 # rad; roll
         self.theta = 0 # rad; pitch
+        self.q = np.array([[self.phi],
+                          [self.theta]])
 
         self.theta_1 = self.phi # rad
         self.theta_2 = self.theta/-2 # rad
@@ -43,8 +45,16 @@ class Differential():
         
         self.J = np.linalg.inv(self.q_B_M) @ self.cs_gear.q_B_H @ self.j
 
-        self.phi = np.arctan2(self.J[1], self.J[2]) # rad; roll angle
-        self.theta = 2*np.arccos(self.J[0]) # rad; pitch angle
+        yz = np.array([[1],
+                       [0],
+                       [0]])
+
+        J = self.J - (np.dot(self.J.flatten(), yz.flatten()) / np.linalg.norm(yz)**2)*yz
+
+        self.phi = np.arctan2(J[1], J[2]) # rad; roll angle
+        self.theta = 2*np.arccos(J[0]) # rad; pitch angle
+        self.q = np.array([[self.phi],
+                          [self.theta]])
 
         '''For forward kinematics'''
         self.theta_1 = self.phi

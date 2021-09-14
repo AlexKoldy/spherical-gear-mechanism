@@ -7,7 +7,6 @@ class CS_Gear():
         self.phi = 0 # rad; roll
         self.theta = 0 # rad; pitch
         self.psi = 0 # rad; yaw
-        self.theta_des = 0 # rad; pitch
         self.q = np.array([[self.phi],
                           [self.theta],
                           [self.psi]])

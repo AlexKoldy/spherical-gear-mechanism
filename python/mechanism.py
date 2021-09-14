@@ -24,7 +24,25 @@ class Mechanism():
         '''Generate Trajectory'''
         self.q_cs_des_generated = self.generate_trajectory(self.q_cs_des)
 
-    def update(self, iterator):        
+        print("q_cs (before update): ")
+        print(self.cs_gear.q)
+
+        self.cs_gear.update(self.cs_gear.q, self.q_cs_des_generated[:, 0].flatten())
+
+        print("q_cs (after update): ")
+        print(self.cs_gear.q)
+
+        '''Inverse Kinematics'''
+        self.differential_A.update()
+        self.differential_B.update()
+
+        print("diff_A (after update): ")
+        print(self.differential_A.q)
+
+        print("diff_B (after update): ")
+        print(self.differential_B.q)
+
+    def update(self, iterator):
         '''Forward Kinematics'''
         theta_A1 = self.differential_A.theta_1
         theta_A2 = self.differential_A.theta_2
@@ -33,9 +51,9 @@ class Mechanism():
         
         U = (np.sin(self.beta)*np.cos(theta_A2)*np.sin(theta_A1)*np.sin(theta_A2) - np.cos(self.beta)*((np.sin(theta_A1)**2)*(np.sin(theta_A2)**2)+1))
         V = ((np.sin(theta_A1)**2*np.sin(theta_A2)**2) - (np.sin(theta_A2)**2 + 1)) 
-        phi_cs = -np.arctan((np.sin(theta_B1)*np.cos(theta_A1)*np.sin(theta_A1)*np.sin(theta_A2)**2 + np.cos(theta_B1)*U) / ((np.cos(theta_B1)*np.cos(theta_A1)*np.sin(theta_A2)*(np.cos(self.beta)*np.sin(theta_A1)*np.sin(theta_A2) - np.sin(self.beta)*np.cos(theta_A2)) + np.sin(theta_B1)*V))) 
+        phi_cs = -np.arctan2((np.sin(theta_B1)*np.cos(theta_A1)*np.sin(theta_A1)*np.sin(theta_A2)**2 + np.cos(theta_B1)*U), ((np.cos(theta_B1)*np.cos(theta_A1)*np.sin(theta_A2)*(np.cos(self.beta)*np.sin(theta_A1)*np.sin(theta_A2) - np.sin(self.beta)*np.cos(theta_A2)) + np.sin(theta_B1)*V))) 
         theta_cs = np.arcsin(np.sin(theta_A2)*(-np.cos(theta_A1)*np.cos(theta_A2)*np.sin(theta_B1) + np.cos(theta_A2)*np.cos(theta_B1)*np.sin(theta_A1)*np.cos(self.beta) + np.sin(theta_A2)*np.cos(theta_B1)*np.sin(self.beta))) 
-        psi_cs = -np.arctan((np.sin(theta_A2) / np.cos(theta_A2)*(np.cos(theta_A1)*np.cos(theta_B1)*np.cos(self.beta) + np.sin(theta_A1)*np.sin(theta_B1)))) 
+        psi_cs = -np.arctan2((np.sin(theta_A2) / np.cos(theta_A2)*(np.cos(theta_A1)*np.cos(theta_B1)*np.cos(self.beta) + np.sin(theta_A1)*np.sin(theta_B1))), 1) 
         q_cs = np.array([[phi_cs],
                          [theta_cs],
                          [psi_cs]])
