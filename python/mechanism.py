@@ -24,26 +24,14 @@ class Mechanism():
         '''Generate Trajectory'''
         self.q_cs_des_generated = self.generate_trajectory(self.q_cs_des)
 
-        print("q_cs (before update): ")
-        print(self.cs_gear.q)
-
-        self.cs_gear.update(self.cs_gear.q, self.q_cs_des_generated[:, 0].flatten())
-
-        print("q_cs (after update): ")
-        print(self.cs_gear.q)
+        #self.cs_gear.update(self.cs_gear.q, self.q_cs_des_generated[:, 0].flatten())
 
         '''Inverse Kinematics'''
-        self.differential_A.update()
-        self.differential_B.update()
-
-        print("diff_A (after update): ")
-        print(self.differential_A.q)
-
-        print("diff_B (after update): ")
-        print(self.differential_B.q)
+        #self.differential_A.update()
+        #self.differential_B.update()
 
     def update(self, iterator):
-        '''Forward Kinematics'''
+        '''Forward Kinematics
         theta_A1 = self.differential_A.theta_1
         theta_A2 = self.differential_A.theta_2
         theta_B1 = self.differential_B.theta_1
@@ -57,9 +45,10 @@ class Mechanism():
         q_cs = np.array([[phi_cs],
                          [theta_cs],
                          [psi_cs]])
-
+        '''
+        
         '''Update CS Gear'''
-        self.cs_gear.update(q_cs, self.q_cs_des_generated[:, iterator])
+        self.cs_gear.update(self.cs_gear.q, self.q_cs_des_generated[:, iterator])
         
         '''Inverse Kinematics'''
         self.differential_A.update()
