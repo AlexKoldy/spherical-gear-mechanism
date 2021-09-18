@@ -86,7 +86,7 @@ class Mechanism():
 		theta_A1 = np.arctan2((np.cos(q_cs_des[0])*np.sin(q_cs_des[2]) + np.cos(q_cs_des[2])*np.sin(q_cs_des[1])*np.sin(q_cs_des[0])), (np.cos(q_cs_des[0])*np.cos(q_cs_des[2])*np.sin(q_cs_des[1]) - np.sin(q_cs_des[0])*np.sin(q_cs_des[2])))
 		theta_A2 = np.arccos(np.cos(q_cs_des[1])*np.cos(q_cs_des[2]))
 		theta_A3 = -np.arctan2(np.cos(q_cs_des[1])*np.sin(q_cs_des[2]), np.sin(q_cs_des[1]))
-		theta_B1 = -np.arctan2((np.cos(q_cs_des[2])*np.cos(beta)*np.cos(q_cs_des[0]) + np.sin(q_cs_des[2])*(np.sin(beta)*np.cos(q_cs_des[1]) - np.cos(beta)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0]))), (-np.cos(beta)*np.sin(q_cs_des[1])*np.sin(q_cs_des[2]) + np.cos(q_cs_des[2])*np.sin(q_cs_des[2]))) 
+		theta_B1 = -np.arctan2((np.cos(q_cs_des[2])*np.cos(beta)*np.cos(q_cs_des[0]) + np.sin(q_cs_des[2])*(np.sin(beta)*np.cos(q_cs_des[1]) - np.cos(beta)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0]))), (-np.cos(q_cs_des[0])*np.sin(q_cs_des[1])*np.sin(q_cs_des[2]) + np.cos(q_cs_des[2])*np.sin(q_cs_des[0]))) 
 		theta_B2 = np.arccos(np.cos(q_cs_des[2])*np.cos(q_cs_des[0])*np.sin(beta) - np.sin(q_cs_des[2])*(np.cos(beta)*np.cos(q_cs_des[1]) + np.sin(beta)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0]))) 
 		theta_B3 = np.arctan2((np.cos(q_cs_des[2])*(np.cos(beta)*np.cos(q_cs_des[1]) + np.sin(beta)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0])) + np.sin(q_cs_des[2])*np.sin(beta)*np.cos(q_cs_des[0])), (-np.cos(beta)*np.sin(q_cs_des[1]) + (np.sin(beta)*np.cos(q_cs_des[1])*np.sin(q_cs_des[0])))) 
 

@@ -1,4 +1,4 @@
-from mechanism2 import Mechanism
+from mechanism import Mechanism
 #from differential import Differential
 #from cs_gear import CS_Gear
 import numpy as np
@@ -31,21 +31,21 @@ class Simulation():
 
         plt.figure()
         
-        #plt.plot(self.t_history, np.asarray(self.mechanism.cs_gear.q_history)[:, 0].flatten(), label="Roll", color="blue")
-        #plt.plot(self.t_history, np.asarray(self.mechanism.cs_gear.q_history)[:, 1].flatten(), label="Pitch", color="green")
-        #plt.plot(self.t_history, np.asarray(self.mechanism.cs_gear.q_history)[:, 2].flatten(), label="Yaw", color="red")
+        plt.plot(self.t_history, np.asarray(self.mechanism.cs_gear.q_history)[:, 0].flatten(), label="Roll", color="blue")
+        plt.plot(self.t_history, np.asarray(self.mechanism.cs_gear.q_history)[:, 1].flatten(), label="Pitch", color="green")
+        plt.plot(self.t_history, np.asarray(self.mechanism.cs_gear.q_history)[:, 2].flatten(), label="Yaw", color="red")
         
-        #plt.plot(self.t_history, self.mechanism.q_cs_trajectory[0, :], '--', label="Desired Roll", color="blue")
-        #plt.plot(self.t_history, self.mechanism.q_cs_trajectory[1, :], '--', label="Desired Pitch", color="green")
-        #plt.plot(self.t_history, self.mechanism.q_cs_trajectory[2, :], '--', label="Desired Yaw", color="red")       
+        plt.plot(self.t_history, self.mechanism.q_cs_trajectory[0, :], '--', label="Desired Roll", color="blue")
+        plt.plot(self.t_history, self.mechanism.q_cs_trajectory[1, :], '--', label="Desired Pitch", color="green")
+        plt.plot(self.t_history, self.mechanism.q_cs_trajectory[2, :], '--', label="Desired Yaw", color="red")       
         
 
-        plt.plot(self.t_history, np.asarray(self.mechanism.differential_A.q_history)[:, 0].flatten(), label="A Roll")
-        plt.plot(self.t_history, np.asarray(self.mechanism.differential_A.q_history)[:, 1].flatten(), label="A Pitch")
+        #plt.plot(self.t_history, np.asarray(self.mechanism.differential_A.q_history)[:, 0].flatten(), label="A Roll")
+        #plt.plot(self.t_history, np.asarray(self.mechanism.differential_A.q_history)[:, 1].flatten(), label="A Pitch")
 
-        plt.plot(self.t_history, np.asarray(self.mechanism.differential_B.q_history)[:, 0].flatten(), label="B Roll")
-        plt.plot(self.t_history, np.asarray(self.mechanism.differential_B.q_history)[:, 1].flatten(), label="B Pitch")
-        plt.xlim(0, 1)
+        #plt.plot(self.t_history, np.asarray(self.mechanism.differential_B.q_history)[:, 0].flatten(), label="B Roll")
+        #plt.plot(self.t_history, np.asarray(self.mechanism.differential_B.q_history)[:, 1].flatten(), label="B Pitch")
+        #plt.xlim(0, 1)
         
 
         #plt.xlim(0, 0.01)
