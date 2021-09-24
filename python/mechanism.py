@@ -83,10 +83,8 @@ class Mechanism():
 		'''Inverse kinematics'''
 		theta_A1 = np.arctan2((np.cos(q_cs_des[0])*np.sin(q_cs_des[2]) + np.cos(q_cs_des[2])*np.sin(q_cs_des[1])*np.sin(q_cs_des[0])), (np.cos(q_cs_des[0])*np.cos(q_cs_des[2])*np.sin(q_cs_des[1]) - np.sin(q_cs_des[0])*np.sin(q_cs_des[2])))
 		theta_A2 = np.arccos(np.cos(q_cs_des[1])*np.cos(q_cs_des[2]))
-		theta_A3 = -np.arctan2(np.cos(q_cs_des[1])*np.sin(q_cs_des[2]), np.sin(q_cs_des[1]))
 		theta_B1 = -np.arctan2((np.cos(q_cs_des[2])*np.around(np.around(np.cos(beta), decimals=5), decimals=5)*np.cos(q_cs_des[0]) + np.sin(q_cs_des[2])*(np.around(np.sin(beta), decimals=5)*np.cos(q_cs_des[1]) - np.around(np.cos(beta), decimals=5)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0]))), (-np.cos(q_cs_des[0])*np.sin(q_cs_des[1])*np.sin(q_cs_des[2]) + np.cos(q_cs_des[2])*np.sin(q_cs_des[0]))) 
 		theta_B2 = np.arccos(np.cos(q_cs_des[2])*np.cos(q_cs_des[0])*np.around(np.sin(beta), decimals=5) - np.sin(q_cs_des[2])*(np.around(np.cos(beta), decimals=5)*np.cos(q_cs_des[1]) + np.around(np.sin(beta), decimals=5)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0]))) 
-		theta_B3 = np.arctan2((np.cos(q_cs_des[2])*(np.around(np.cos(beta), decimals=5)*np.cos(q_cs_des[1]) + np.around(np.sin(beta), decimals=5)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0])) + np.sin(q_cs_des[2])*np.around(np.sin(beta), decimals=5)*np.cos(q_cs_des[0])), (-np.around(np.cos(beta), decimals=5)*np.sin(q_cs_des[1]) + (np.around(np.sin(beta), decimals=5)*np.cos(q_cs_des[1])*np.sin(q_cs_des[0])))) 
 
 		q_differential_A = np.array([[theta_A1], # roll [rad]
 									 [-2*theta_A2]]) # pitch [rad]
