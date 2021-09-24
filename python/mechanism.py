@@ -33,7 +33,7 @@ class Mechanism():
 			self.q = q
 			self.q_history.append(self.q)
 		
-	def __init__(self):
+	def __init__(self, steps):
 		'''Build differentials'''
 		self.differential_A = self.Differential(np.array([np.pi/2, 0, 0]))
 		self.differential_B = self.Differential(np.array([-np.pi/2, 0, np.pi]))
@@ -46,9 +46,7 @@ class Mechanism():
 		q_cs_des = np.array([[0], # desired roll [rad]
 							 [np.pi/2], # desired pitch [rad]
 							 [0]]) # desired yaw [rad]
-		self.q_cs_trajectory = self.generate_trajectory(self.cs_gear.q, q_cs_des)
-
-		print(self.cs_gear.q)
+		self.q_cs_trajectory = self.generate_trajectory(self.cs_gear.q, q_cs_des, steps)
 
 	def forward_kinematics(self, q_differential_A, q_differential_B):
 		beta = np.pi/2
@@ -71,10 +69,10 @@ class Mechanism():
 
 		return q_cs
 	
-	def generate_trajectory(self, q_cs_0, q_cs_des):
-		phi_cs_trajectory = np.linspace(q_cs_0[0], q_cs_des[0], 1000).flatten()
-		theta_cs_trajectory = np.linspace(q_cs_0[1], q_cs_des[1], 1000).flatten()
-		psi_cs_trajectory = np.linspace(q_cs_0[2], q_cs_des[2], 1000).flatten()
+	def generate_trajectory(self, q_cs_0, q_cs_des, steps):
+		phi_cs_trajectory = np.linspace(q_cs_0[0], q_cs_des[0], steps).flatten()
+		theta_cs_trajectory = np.linspace(q_cs_0[1], q_cs_des[1], steps).flatten()
+		psi_cs_trajectory = np.linspace(q_cs_0[2], q_cs_des[2], steps).flatten()
 		q_cs_trajectory = np.vstack((phi_cs_trajectory, theta_cs_trajectory, psi_cs_trajectory))
 
 		return q_cs_trajectory
@@ -86,9 +84,9 @@ class Mechanism():
 		theta_A1 = np.arctan2((np.cos(q_cs_des[0])*np.sin(q_cs_des[2]) + np.cos(q_cs_des[2])*np.sin(q_cs_des[1])*np.sin(q_cs_des[0])), (np.cos(q_cs_des[0])*np.cos(q_cs_des[2])*np.sin(q_cs_des[1]) - np.sin(q_cs_des[0])*np.sin(q_cs_des[2])))
 		theta_A2 = np.arccos(np.cos(q_cs_des[1])*np.cos(q_cs_des[2]))
 		theta_A3 = -np.arctan2(np.cos(q_cs_des[1])*np.sin(q_cs_des[2]), np.sin(q_cs_des[1]))
-		theta_B1 = -np.arctan2((np.cos(q_cs_des[2])*np.cos(beta)*np.cos(q_cs_des[0]) + np.sin(q_cs_des[2])*(np.sin(beta)*np.cos(q_cs_des[1]) - np.cos(beta)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0]))), (-np.cos(q_cs_des[0])*np.sin(q_cs_des[1])*np.sin(q_cs_des[2]) + np.cos(q_cs_des[2])*np.sin(q_cs_des[0]))) 
-		theta_B2 = np.arccos(np.cos(q_cs_des[2])*np.cos(q_cs_des[0])*np.sin(beta) - np.sin(q_cs_des[2])*(np.cos(beta)*np.cos(q_cs_des[1]) + np.sin(beta)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0]))) 
-		theta_B3 = np.arctan2((np.cos(q_cs_des[2])*(np.cos(beta)*np.cos(q_cs_des[1]) + np.sin(beta)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0])) + np.sin(q_cs_des[2])*np.sin(beta)*np.cos(q_cs_des[0])), (-np.cos(beta)*np.sin(q_cs_des[1]) + (np.sin(beta)*np.cos(q_cs_des[1])*np.sin(q_cs_des[0])))) 
+		theta_B1 = -np.arctan2((np.cos(q_cs_des[2])*np.around(np.around(np.cos(beta), decimals=5), decimals=5)*np.cos(q_cs_des[0]) + np.sin(q_cs_des[2])*(np.around(np.sin(beta), decimals=5)*np.cos(q_cs_des[1]) - np.around(np.cos(beta), decimals=5)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0]))), (-np.cos(q_cs_des[0])*np.sin(q_cs_des[1])*np.sin(q_cs_des[2]) + np.cos(q_cs_des[2])*np.sin(q_cs_des[0]))) 
+		theta_B2 = np.arccos(np.cos(q_cs_des[2])*np.cos(q_cs_des[0])*np.around(np.sin(beta), decimals=5) - np.sin(q_cs_des[2])*(np.around(np.cos(beta), decimals=5)*np.cos(q_cs_des[1]) + np.around(np.sin(beta), decimals=5)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0]))) 
+		theta_B3 = np.arctan2((np.cos(q_cs_des[2])*(np.around(np.cos(beta), decimals=5)*np.cos(q_cs_des[1]) + np.around(np.sin(beta), decimals=5)*np.sin(q_cs_des[1])*np.sin(q_cs_des[0])) + np.sin(q_cs_des[2])*np.around(np.sin(beta), decimals=5)*np.cos(q_cs_des[0])), (-np.around(np.cos(beta), decimals=5)*np.sin(q_cs_des[1]) + (np.around(np.sin(beta), decimals=5)*np.cos(q_cs_des[1])*np.sin(q_cs_des[0])))) 
 
 		q_differential_A = np.array([[theta_A1], # roll [rad]
 									 [-2*theta_A2]]) # pitch [rad]
@@ -107,10 +105,9 @@ class Mechanism():
 		self.differential_B.update(q_differential_B)
 
 		'''
-		Forward kinematics: map new differential position to
-		new cross spherical gear position
+		Update cross spherical gear
 		'''
-		q_cs = self.forward_kinematics(self.differential_A.q, self.differential_B.q)
+		q_cs = self.q_cs_trajectory[:, i].reshape((3, 1))
 		self.cs_gear.update(q_cs)
 
 

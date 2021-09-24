@@ -30,19 +30,21 @@ class Robot():
 		return [mp_A, mp_B]
 		
 cs_orien0 = np.zeros([3])
-cs_orien0[0] = np.pi/10.
-cs_orien0[1] = np.pi/12.
-cs_orien0[2] = -np.pi/10.
+cs_orien0[0] = 0#np.pi/10.
+cs_orien0[1] = 0#np.pi/12.
+cs_orien0[2] = 0#np.pi/10.
 cs_orienf = np.zeros([3])
-cs_orienf[0] = np.pi/3.
+cs_orienf[0] = 0#np.pi/3.
 cs_orienf[1] = np.pi/4.
-cs_orienf[2] = np.pi/3.
+cs_orienf[2] = 0#np.pi/3.
 T = 10000
 robot = Robot()
 cs_traj = robot.genTraj(cs_orien0, cs_orienf, T)
 mp_log = []
 for i in range(T):
 	mp_log.append(robot.invKin(cs_traj[i]))
+
+
 
 
 plt.figure()
@@ -62,4 +64,3 @@ plt.plot([ dp[1][1]/np.pi*180. for dp in mp_log], 'r-', label='MP B pitch')
 plt.legend()
 
 plt.show()
-
